@@ -1,0 +1,18 @@
+{
+    "songs": [
+      {
+        "name": "Hey Jude",
+        "artist": "The Beatles",
+        "image": "https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/1-hey-jude-halim-vero.jpg",
+        "lyrics_chords_path": "../data/hey_jude.json",
+        "languege": "en"
+      },
+      {
+        "name": "ואיך שלא",
+        "artist": "Ariel Zilber",
+        "image": "https://i.ytimg.com/vi/2GxJ_E4Alsw/maxresdefault.jpg",
+        "lyrics_chords_path": "../data/veech_shelo.json",
+        "languege": "he"
+      }
+    ]
+  }

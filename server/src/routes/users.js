@@ -11,7 +11,8 @@ const secret = process.env.SECRET
 
 const router = express.Router()
 
-router.post("/signup", async (req, res) => {
+
+const signup = async (req, res, isAdmin) => {
 
     const {username, password, instrument} = req.body;
 
@@ -23,31 +24,19 @@ router.post("/signup", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, slatRounds)
 
-    const newUser = new UsersModel({username, password: hashedPassword, instrument, isAdmin: false})
+    const newUser = new UsersModel({username, password: hashedPassword, instrument, isAdmin})
     await newUser.save()
 
     res.json({message: "User registerd! Please log in"})
-    
 
+}
+
+router.post("/signup", async (req, res) => {
+    signup(req, res, false)
 })
 
-router.post("/signup/admin", async (req, res) => {
-
-    const {username, password, instrument } = req.body;
-
-    const user = await UsersModel.findOne({ username });
-
-    if(user){   
-        return res.status(401).json({ message: "User already exists!" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, slatRounds)
-
-    const newUser = new UsersModel({username, password: hashedPassword, instrument, isAdmin: true})
-    await newUser.save()
-
-    res.json({message: "Admin registerd! Please log in "})
-
+router.post("/signup/admin", async (req, res) => { 
+    signup(req, res, true)
 })
 
 router.post('/login', async (req, res) => {
@@ -68,12 +57,6 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign({id: user._id}, secret)
 
-    if (user.isAdmin) {
-        // admin connect to the socket - open the socket connection
-    }
-    else{
-        //regular player connct to the socket
-    }
     res.json({token, userId: user._id, isAdmin: user.isAdmin })
 })
 

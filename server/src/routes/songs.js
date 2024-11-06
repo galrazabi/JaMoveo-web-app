@@ -1,61 +1,23 @@
 import express from 'express';
 import { UsersModel } from '../models/Users.js';
 import {verifyToken} from "../verifyToken.js"
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';//////
-
-const __filename = fileURLToPath(import.meta.url); ////////
-const __dirname = path.dirname(__filename);  ///////////
+import { searchSongsDB } from "../utils.js"
+ 
 
 const router = express.Router()
 
-router.get('/match/song/list/:songName', verifyToken , async (req,res) => {
-    const songName = req.params.songName.toLowerCase()
+router.get('/match/song/list/:searchTerm', verifyToken, (req, res) => {
 
-    const dataDir = path.join(__dirname, '../../data'); //////////
+    const { searchTerm } = req.params;
 
-    try {
-        const files = fs.readdirSync(dataDir);
-        const matchingFiles = [];
+    // Search for songs that match the search term in the mock hard-coded database
+    const matchingSongs = searchSongsDB(searchTerm);
+    res.json({matchingSongs});
+});
 
-        files.forEach(file => {
-            const filePath = path.join(dataDir, file);
-            const fileContent = fs.readFileSync(filePath, 'utf-8'); // Read file content
-            let jsonData;
+// router.get('/lyrics')
 
-            try {
-                jsonData = JSON.parse(fileContent); // Parse JSON content
-            } catch (error) {
-                console.error(`Error parsing JSON in file ${file}:`, error);
-                return;
-            }
 
-            // Helper function to search recursively for the word in JSON
-            const searchInLyrics = (data) => {
-                if (Array.isArray(data)) {
-                    return data.some(item => searchInLyrics(item));
-                } else if (typeof data === 'object' && data !== null) {
-                    return Object.values(data).some(value => searchInLyrics(value));
-                } else if (typeof data === 'string') {
-                    return data.toLowerCase().includes(songName); // Check if string contains the search term
-                }
-                return false;
-            };
 
-            // If the file contains the search term, add the filename to matchingFiles
-            if (searchInLyrics(jsonData)) {
-                matchingFiles.push(file);
-            }
-        });
-
-        // Return the matching file names
-        res.json({ matchingFiles });
-    } catch (error) {
-        console.error("Error reading files:", error);
-        res.status(500).json({ message: "An error occurred while searching for songs." });
-    }
-
-})
 
 export {router as songRouter}

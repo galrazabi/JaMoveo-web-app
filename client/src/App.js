@@ -26,8 +26,6 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/searchsong" element={<SearchSong />} />
             <Route path="/mainplayer" element={<MainPlayer />} />
-            {/* <Route path="/mainadmin" element={<MainAdmin />} /> */}
-            {/* <Route path="/results" element={<Results />} /> */}
             <Route path="/live" element={<Live />} />
           </Routes>
         </Router>

@@ -5,22 +5,25 @@ import { useNavigate} from 'react-router-dom'
 
 export const MainPlayer = () => {
 
-    const socket = useContext(SocketContext)
+    const {socket} = useContext(SocketContext)
     const navigate = useNavigate()
 
 
     useEffect(() => {
-        socket.on('connect', () => {
-            console.log("connected to server")
-        })
+        const handleConnect = () => console.log("Connected to server");
+        const handleStartRehearsal = () => {
+            console.log("Client says start Rehearsal");
+            navigate("/live");
+        };
+        
+        socket.on('connect', handleConnect);
+        socket.on("startRehearsal", handleStartRehearsal);
 
-
-    },[])
-
-    socket.on("startRehearsal", () => {
-        console.log("client say start Rehearsal")
-        navigate("/live")
-    })
+        return () => {
+            socket.off("startRehearsal", handleStartRehearsal); // Clean up only the event listeners
+            socket.off('connect', handleConnect);
+        };
+    }, [socket, navigate]);
 
     return (
         <div>

@@ -1,18 +1,17 @@
 import { useEffect, useState, useContext } from "react";
 import { SocketContext } from "./socket"
 import { useNavigate} from 'react-router-dom'
+import axios from "axios";
 
 
 export const Results = ({songsList, setSongsList, setIsMain}) => {
 
-    const socket = useContext(SocketContext)
+    const {socket } = useContext(SocketContext)
     const navigate = useNavigate()
 
-
-    const goToLive = (song) => {
+    const goToLive = async (song) => {
         socket.emit('adminStartRehearsal', song)
-        setSongsList([])
-        setIsMain(true)
+        setSongsList([]) 
         navigate("/live")
     }
 
@@ -28,9 +27,9 @@ export const Results = ({songsList, setSongsList, setIsMain}) => {
                 { songsList.map(( song ) => ( // should contain song name, artist and image
                     <li key={song}>
                         <button  type="button" onClick={() => goToLive(song)}>
-                            <p>Song Name: {song}</p>
-                            <p>artist: {song}</p>
-                            {/* <img src={recipe.imageURL} alt={recipe.name} /> */}
+                            <p>Song Name: {song.name}</p>
+                            <p>artist: {song.artist}</p>
+                            <img src={song.image} alt={song.name} />
                         </button>
                     </li>
                     

@@ -1,12 +1,11 @@
 import { Server } from 'socket.io'
-
+import { getLyrics, formatLyricsAndChords } from '../utils.js'
 
 // for now the band will be a dict - need to make it in the database
 
 
 const setUpSocket = (server) => {
 
-    // const io = new Server(server)
     const io = new Server(server, {
         cors: {
           origin: '*',
@@ -15,22 +14,23 @@ const setUpSocket = (server) => {
       });
 
     io.on("connection", (socket) => {
-      // check JWT !!!!!!
-        //add to a specific room,  for know broadcast to everybody
-        // socket.join("room1")
+
         console.log("user connected: " + socket.id)
 
         socket.on('adminStartRehearsal', (song) => { 
           //check what to send (lyric or all) and who to send to
-          console.log('admin Start Rehearsal with song:', song)
+          const lyrics = getLyrics(song)
+          const lyricsAndChords = formatLyricsAndChords(song)
           socket.broadcast.emit('startRehearsal') // send to everyone but myself
-          console.log('admin Start Rehearsal')
-          io.emit('sendLyricsAndChords', song)
+          console.log('lyricsAndChords: ', lyricsAndChords) 
+          // io.emit('sendLyrics', {song, lyrics})
+          io.emit('sendLyricsAndChords', {song , lyricsAndChords} )
+          console.log('admin Start Rehearsal') 
         })
 
-        socket.emit('sendLyrics', () => {console.log('sendLyrics')})
+        
 
-        socket.emit('sendLyricsAndChords', () => {console.log('sendLyricsAndChords')})
+        
 
         socket.on('adminEndRehearsal', () => {
           console.log('adminEndRehearsal')
@@ -46,10 +46,10 @@ const setUpSocket = (server) => {
       // }
       // disconnectAllUsers()
 
-        socket.on('close', () => {
-             
-            console.log('user disconnected' + socket.id)
-        })
+      socket.on('disconnect', () => {
+        console.log('User disconnected: ' + socket.id );
+        
+      });
     })
 
 }

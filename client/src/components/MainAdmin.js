@@ -8,25 +8,21 @@ import axios from "axios"
 
 export const MainAdmin = ({ setSongsList, setIsMain}) => {
 
-    const [songName, setSongName] = useState("")
-    const socket = useContext(SocketContext)
+    const [searchTerm, setSearchTerm] = useState("")
     const [cookie, _ ] = useCookies("access_token")
-
-    useEffect(() => {
-        socket.on('connect', () => {
-            console.log("connected to server")
-        })
-    }, [])
 
     const onSubmit = async (event) => {
         event.preventDefault();
         try{
-            const response = await axios.get(`http://localhost:8000/songs/match/song/list/${songName}`, {headers: {authorization : cookie.access_token}});
-            setSongsList(await response.data.matchingFiles)
+            const response = await axios.get(`http://localhost:8000/songs/match/song/list/${searchTerm}`, {headers: {authorization : cookie.access_token}});
+            setSongsList(response.data.matchingSongs)
             setIsMain(false)
-            //console.log(await response.data.matchingFiles)
 
         }catch(err) {
+            newFunction(err)
+        }
+
+        function newFunction(err) {
             console.error(err)
         }
     }
@@ -36,7 +32,7 @@ export const MainAdmin = ({ setSongsList, setIsMain}) => {
 
             <h1>Search any song</h1>
             <form onSubmit={ onSubmit }>
-                <input type="text" value={songName} onChange={(e) => setSongName(e.target.value)} />
+                <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                 <button type="submit">Search</button>
             </form>
         </div>
