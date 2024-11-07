@@ -7,6 +7,7 @@ import { MainPlayer } from './MainPlayer'
 import { SearchSong } from "./SearchSong";
 import { io } from 'socket.io-client';
 import {Live} from './Live'
+import './RehearsalRoom.css'
 
 
 export const SocketContext = createContext();
@@ -78,21 +79,18 @@ export const RehearsalRoom = () => {
 
 
     return (
-        < SocketContext.Provider  value={{ socket }}>
-        <div>
-        <nav>
-            <button onClick={() => {logout()}}>Logout</button>
-        </nav>
-            { !isLive ? 
-                <div>
-                    { isAdmin ? <SearchSong /> : <MainPlayer /> }
-                </div> : 
-                <Live 
-                songData = {songData} 
-                lyricsOrChords = {lyricsOrChords}  />
-            }
-        </div>    
-        </SocketContext.Provider>
+        <SocketContext.Provider value={{ socket, logout }}>
+            <div className="container-fullscreen">
+                {!isLive ? (
+                    <div>
+                        {isAdmin ? <SearchSong /> : <MainPlayer />}
+                    </div>
+                ) : (
+                    <Live songData={songData} lyricsOrChords={lyricsOrChords} />
+                )}
+            </div>
+
+    </SocketContext.Provider>
     );
 
 }

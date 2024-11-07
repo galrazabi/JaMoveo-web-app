@@ -14,6 +14,11 @@ export const Signup = () => {
 
     const onSubmit = async (event) => {
         event.preventDefault()
+
+        if (!username || !password) {
+            alert("Username and password are required.");
+            return; 
+        }
         try{
 
             const instrument = document.getElementById("instrument").value
@@ -38,7 +43,7 @@ export const Signup = () => {
     return (
         <div className="auth-container">
             <h1>{isAdmin ? "Admin Sign Up" : "Sign Up"}</h1>
-            <button className="back-btn" onClick={() => navigate('/')}>Back</button>
+            <button className="auth-back-btn" onClick={() => navigate('/')}>Back</button>
             <form onSubmit={onSubmit} className="auth-form">
                 <div className="form-group">
                     <label htmlFor="username">Username</label>

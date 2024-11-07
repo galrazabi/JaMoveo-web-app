@@ -1,18 +1,17 @@
-/* Basic Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Body Styling */
+
 body {
     background-color: #1e1e1e;
     font-family: Arial, sans-serif;
     color: #ffffff;
 }
 
-/* Home Container Styling */
+
 .home-container {
     display: flex;
     flex-direction: column;
@@ -23,27 +22,27 @@ body {
     padding: 20px;
 }
 
-/* Heading Styling */
+
 .home-container h1 {
     font-size: 2.5em;
     color: #ffffff;
     margin-bottom: 15px;
 }
 
-/* Paragraph Styling */
+
 .home-container p {
     font-size: 1.2em;
     color: #d3d3d3;
     margin-bottom: 30px;
 }
 
-/* Button Group Styling */
+
 .button-group {
     display: flex;
     gap: 20px;
 }
 
-/* Button Styling */
+
 .btn {
     padding: 10px 20px;
     font-size: 1em;
@@ -60,7 +59,8 @@ body {
     color: #1e1e1e;
 }
 
-/* Mobile Responsiveness */
+
+
 @media (max-width: 600px) {
     .home-container h1 {
         font-size: 2em;

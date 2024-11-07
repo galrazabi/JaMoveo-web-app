@@ -11,7 +11,7 @@ import { SearchSong } from './components/SearchSong';
 
 function App() {
   return (
-    <div className="App">
+    <div>
         <Router>
           {/* <Navbar /> */}
           <Routes>
@@ -19,9 +19,6 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signup/admin" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            {/* <Route path="/searchsong" element={<SearchSong />} />
-            <Route path="/mainplayer" element={<MainPlayer />} />
-            <Route path="/live" element={<Live />} /> */}
             <Route path='/rehearsalroom' element={<RehearsalRoom />} /> 
           </Routes>
         </Router>

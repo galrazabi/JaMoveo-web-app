@@ -1,4 +1,4 @@
-/* Auth Container Styling */
+
 .auth-container {
     display: flex;
     flex-direction: column;
@@ -17,8 +17,7 @@
     color: #ffffff;
 }
 
-/* Back Button Styling */
-.back-btn {
+.auth-back-btn {
     position: absolute;
     top: 20px;
     left: 20px;
@@ -32,12 +31,12 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.back-btn:hover {
+.auth-back-btn:hover {
     background-color: #ff3b3b;
     color: #1e1e1e;
 }
 
-/* Form Styling */
+
 .auth-form {
     width: 100%;
     max-width: 400px;
@@ -46,7 +45,7 @@
     gap: 15px;
 }
 
-/* Form Group Styling */
+
 .form-group {
     display: flex;
     flex-direction: column;
@@ -69,7 +68,6 @@
 }
 
 
-/* Button Styling */
 .submit-btn {
     padding: 10px 20px;
     font-size: 1em;

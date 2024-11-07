@@ -34,7 +34,10 @@ export const Login = () => {
     return (
         <div className="auth-container">
             <h1>Log In</h1>
-            <button className="back-btn" onClick={() => navigate('/')}>Back</button>
+            <nav className='nav-bar'>
+                <button className="auth-back-btn" onClick={() => navigate('/')}>Back</button>
+            </nav>
+            
             <form onSubmit={onSubmit} className="auth-form">
                 <div className="form-group">
                     <label htmlFor="username">Username</label>
