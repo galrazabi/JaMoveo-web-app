@@ -13,6 +13,10 @@ export const Live = () => {
     const { socket } = useContext(SocketContext)
     const isAdmin = useGetIsAdmin()
     const navigate = useNavigate()
+    const [isScrolling, setIsScrolling] = useState(false);
+
+    let scrollInterval;
+
 
     useEffect(() => {
         const handleLyricsAndChords = ({song ,lyricsAndChords}) => {
@@ -39,6 +43,26 @@ export const Live = () => {
         };
     }, [socket, isAdmin, navigate]);
 
+    const toggleScroll = () => { // change and check if like setIsScrolling(!isScrolling) 
+        setIsScrolling((prev) => !prev);
+    };
+
+    // Automatic scrolling effect
+    useEffect(() => {
+        if (isScrolling) {
+            scrollInterval = setInterval(() => {
+                window.scrollBy({
+                    top: 1, // Adjust scroll speed here
+                    behavior: 'smooth'
+                });
+            }, 50); // Adjust interval time here for slower/faster scrolling
+        } else {
+            clearInterval(scrollInterval);
+        }
+
+        return () => clearInterval(scrollInterval); // Clean up on component unmount
+    }, [isScrolling]);
+
     const endRehearsal = () => {
         socket.emit("adminEndRehearsal")
     }
@@ -56,6 +80,24 @@ export const Live = () => {
             <br />
 
             { isAdmin && <button onClick={endRehearsal}>Quit</button> }
+            <button
+                onClick={toggleScroll}
+                style={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    right: '20px',
+                    padding: '10px 20px',
+                    backgroundColor: isScrolling ? 'red' : 'green',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '50%',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    zIndex: 1000
+                }}
+            >
+                {isScrolling ? 'Stop' : 'Start'}
+            </button>
         </div>
     )
 }

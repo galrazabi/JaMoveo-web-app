@@ -9,6 +9,7 @@ import {Results} from './components/Results'
 import {Live} from './components/Live'
 import { Navbar } from './components/Navbar';
 import { SocketProvider } from './components/socket'
+import { RehearsalRoom } from './components/RehearsalRoom';
 import { SearchSong } from './components/SearchSong';
 
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/searchsong" element={<SearchSong />} />
             <Route path="/mainplayer" element={<MainPlayer />} />
             <Route path="/live" element={<Live />} />
+            <Route path='/rehearsalroom' element={<RehearsalRoom />} />
           </Routes>
         </Router>
       </SocketProvider>

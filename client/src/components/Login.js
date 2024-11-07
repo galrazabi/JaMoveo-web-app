@@ -14,11 +14,13 @@ export const Login = () => {
         event.preventDefault()
         try{
             const response = await axios.post("http://localhost:8000/users/login", {username, password})
+            console.log(response.data);
             
             window.localStorage.setItem("userId", await response.data.userId)
             window.localStorage.setItem("isAdmin", await response.data.isAdmin)
             setCookie("access_token", await response.data.token)
-            navigate(await response.data.isAdmin ? "/searchsong" : "/mainplayer")
+            // navigate(await response.data.isAdmin ? "/searchsong" : "/mainplayer")
+            navigate('/rehearsalroom')
 
         } catch(err) {
             if (err.response && err.response.status === 401) {
