@@ -23,22 +23,20 @@ export const Signup = () => {
                 const response = await axios.post("http://localhost:8000/users/signup", {username, password, instrument})
             }
             navigate("/")
-            //add an alert for succsessful registration
-            // alert("User registerd! Please log in")
             
 
         } catch(err) {
             if (err.response && err.response.status === 401) {
-                alert(err.response.data.message);  // Display error message from the server
+                alert(err.response.data.message);  
             } else {
                 console.error("An unexpected error occurred:", err);
             }
         }
     }
- // add admin addition in the headline
+
     return (
         <div>
-            <h1>Sign Up</h1> 
+            <h1>{isAdmin && "Admin"} Sign Up </h1> 
             <form onSubmit={onSubmit}>
                 <div>
                     <label htmlFor='username' >Username</label>

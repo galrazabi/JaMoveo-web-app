@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom'
-// import { useGetUserID } from '../hooks/useGetUserId'
 import {useCookies } from 'react-cookie'
 import { useNavigate, useLocation } from 'react-router-dom'
-// import { SocketContext } from "./socket"
-import { useContext, useEffect } from "react"
 import { useGetIsAdmin } from "../hooks/useGetIsAdmin"
 
 
@@ -11,7 +8,6 @@ import { useGetIsAdmin } from "../hooks/useGetIsAdmin"
 
 export const Navbar = () => {
 
-    // const { socket } = useContext(SocketContext); //RR
     const [cookie, setCookie] = useCookies(["access_token"]) 
     const navigate = useNavigate()
     const isAdmin = useGetIsAdmin()
@@ -39,10 +35,7 @@ export const Navbar = () => {
             <>
                 <button onClick={logout}>Logout</button>
             </>
-
         }
-
-
         </div>
     )
 

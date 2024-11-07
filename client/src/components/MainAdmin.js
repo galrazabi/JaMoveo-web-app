@@ -1,8 +1,6 @@
-import { useState, useEffect, useContext } from "react"
-import { useGetIsAdmin } from "../hooks/useGetIsAdmin"
+import { useState } from "react"
 import { useCookies } from 'react-cookie'
 import axios from "axios"
-
 
 
 export const MainAdmin = ({ setSongsList, setIsMain}) => {
@@ -24,7 +22,6 @@ export const MainAdmin = ({ setSongsList, setIsMain}) => {
 
     return (
         <div>
-
             <h1>Search any song</h1>
             <form onSubmit={ onSubmit }>
                 <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />

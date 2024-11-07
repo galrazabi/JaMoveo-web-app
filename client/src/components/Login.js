@@ -19,12 +19,11 @@ export const Login = () => {
             window.localStorage.setItem("userId", await response.data.userId)
             window.localStorage.setItem("isAdmin", await response.data.isAdmin)
             setCookie("access_token", await response.data.token)
-            // navigate(await response.data.isAdmin ? "/searchsong" : "/mainplayer") //RR
             navigate('/rehearsalroom')
 
         } catch(err) {
             if (err.response && err.response.status === 401) {
-                alert(err.response.data.message);  // Display error message from the server
+                alert(err.response.data.message); 
             } else {
                 console.error("An unexpected error occurred:", err);
             }

@@ -1,8 +1,6 @@
-import { useEffect, useState, useContext } from "react";
-// import { SocketContext } from "./socket"
+import { useContext } from "react";
 import { SocketContext } from "./RehearsalRoom"
 import { useNavigate} from 'react-router-dom'
-import axios from "axios";
 
 
 export const Results = ({songsList, setSongsList, setIsMain}) => {
@@ -12,8 +10,6 @@ export const Results = ({songsList, setSongsList, setIsMain}) => {
 
     const goToLive = async (song) => {
         socket.emit('adminStartRehearsal', song)
-        // setSongsList([]) //RR
-        // navigate("/live") // RR
     }
 
     const backToMain = () => {

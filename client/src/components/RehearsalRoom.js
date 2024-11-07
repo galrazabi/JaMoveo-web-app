@@ -1,14 +1,12 @@
-import { useEffect, useState, useContex, createContext } from "react";
-import { useNavigate} from 'react-router-dom'
+import { useEffect, useState, createContext } from "react";
 import { useGetIsAdmin } from "../hooks/useGetIsAdmin"
 import { useGetUserId } from '../hooks/useGetUserId'
 import { useCookies } from 'react-cookie'
-import axios from "axios"
 import { MainPlayer } from './MainPlayer'
 import { SearchSong } from "./SearchSong";
 import { io } from 'socket.io-client';
 import {Live} from './Live'
-import { Navbar } from './Navbar';
+
 
 export const SocketContext = createContext();
 
@@ -18,11 +16,10 @@ export const RehearsalRoom = () => {
     const [ isLive, setIsLive ] = useState(false)
     const [lyricsOrChords, setLyricsOrChords] = useState([])
     const [songData, setSongData] = useState({})
-    
-    const navigate = useNavigate()
+  
     const userId = useGetUserId()
     const isAdmin = useGetIsAdmin()
-    const [cookie, setCookie] = useCookies(["access_token"])
+    // const [cookie, setCookie] = useCookies(["access_token"])
 
     useEffect(() => {
         // Initialize socket connection only once and send the user id saved in the local storage
@@ -64,9 +61,6 @@ export const RehearsalRoom = () => {
             newSocket.off("startRehearsal", handleStartRehearsal); 
             newSocket.off("endRehearsal", handleEndRehearsal); 
             newSocket.disconnect();
-            // setCookie("access_token", "")
-            // window.localStorage.removeItem("userId")
-            // window.localStorage.removeItem("isAdmin")
         };
     }, [userId, isAdmin]); 
 
@@ -82,10 +76,7 @@ export const RehearsalRoom = () => {
                 songData = {songData} 
                 lyricsOrChords = {lyricsOrChords}  />
             }
-        </div>
-
-
-            
+        </div>    
         </SocketContext.Provider>
     );
 
