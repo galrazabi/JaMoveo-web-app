@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
+import "./Auth.css"
 
 export const Signup = () => {
 
@@ -35,20 +36,21 @@ export const Signup = () => {
     }
 
     return (
-        <div>
-            <h1>{isAdmin && "Admin"} Sign Up </h1> 
-            <form onSubmit={onSubmit}>
-                <div>
-                    <label htmlFor='username' >Username</label>
-                    <input type='text' id='username' value={username} onChange={e => setUsername(e.target.value)} />
+        <div className="auth-container">
+            <h1>{isAdmin ? "Admin Sign Up" : "Sign Up"}</h1>
+            <button className="back-btn" onClick={() => navigate('/')}>Back</button>
+            <form onSubmit={onSubmit} className="auth-form">
+                <div className="form-group">
+                    <label htmlFor="username">Username</label>
+                    <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value)} />
                 </div>
-                <div>
-                    <label htmlFor='password'>Password</label>
-                    <input type='password' id='password' value={password} onChange={e => setPassword(e.target.value)} />
+                <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <input type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
                 </div>
-                <div>
-                    <label htmlFor='instrument'>Instrument</label>
-                    <select id='instrument' >
+                <div className="form-group">
+                    <label htmlFor="instrument">Instrument</label>
+                    <select id="instrument">
                         <option value="drums">Drums</option>
                         <option value="guitars">Guitars</option>
                         <option value="bass">Bass</option>
@@ -57,8 +59,7 @@ export const Signup = () => {
                         <option value="vocals">Vocals</option>
                     </select>
                 </div>
-                <button type='submit'>Register</button>
-
+                <button type="submit" className="submit-btn">Register</button>
             </form>
         </div>
     )

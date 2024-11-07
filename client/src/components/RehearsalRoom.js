@@ -1,6 +1,7 @@
 import { useEffect, useState, createContext } from "react";
 import { useGetIsAdmin } from "../hooks/useGetIsAdmin"
 import { useGetUserId } from '../hooks/useGetUserId'
+import { useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie'
 import { MainPlayer } from './MainPlayer'
 import { SearchSong } from "./SearchSong";
@@ -16,10 +17,11 @@ export const RehearsalRoom = () => {
     const [ isLive, setIsLive ] = useState(false)
     const [lyricsOrChords, setLyricsOrChords] = useState([])
     const [songData, setSongData] = useState({})
+    const navigate = useNavigate()
   
     const userId = useGetUserId()
     const isAdmin = useGetIsAdmin()
-    // const [cookie, setCookie] = useCookies(["access_token"])
+    const [_, setCookie] = useCookies(["access_token"])
 
     useEffect(() => {
         // Initialize socket connection only once and send the user id saved in the local storage
@@ -64,10 +66,23 @@ export const RehearsalRoom = () => {
         };
     }, [userId, isAdmin]); 
 
+    const logout = () => {
+        if (isAdmin && isLive) { 
+            socket.emit("adminEndRehearsal")
+        }
+        setCookie("access_token", "")
+        window.localStorage.removeItem("userId")
+        window.localStorage.removeItem("isAdmin")
+        navigate("/")
+    }
+
 
     return (
         < SocketContext.Provider  value={{ socket }}>
         <div>
+        <nav>
+            <button onClick={() => {logout()}}>Logout</button>
+        </nav>
             { !isLive ? 
                 <div>
                     { isAdmin ? <SearchSong /> : <MainPlayer /> }

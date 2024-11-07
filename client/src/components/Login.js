@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import { useCookies } from 'react-cookie'
+import "./Auth.css"
 
 export const Login = () => {
 
@@ -31,19 +32,19 @@ export const Login = () => {
     }
  
     return (
-        <div>
+        <div className="auth-container">
             <h1>Log In</h1>
-            <form onSubmit={onSubmit}>
-                <div>
-                    <label htmlFor='username' >Username</label>
-                    <input type='text' id='username' value={username} onChange={e => setUsername(e.target.value)} />
+            <button className="back-btn" onClick={() => navigate('/')}>Back</button>
+            <form onSubmit={onSubmit} className="auth-form">
+                <div className="form-group">
+                    <label htmlFor="username">Username</label>
+                    <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value)} />
                 </div>
-                <div>
-                    <label htmlFor='password'>Password</label>
-                    <input type='password' id='password' value={password} onChange={e => setPassword(e.target.value)} />
+                <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <input type="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
                 </div>
-                <button type='submit'>Login</button>
-
+                <button type="submit" className="submit-btn">Login</button>
             </form>
         </div>
     )
