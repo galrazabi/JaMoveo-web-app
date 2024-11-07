@@ -7,12 +7,18 @@ import axios from "axios"
 import { MainPlayer } from './MainPlayer'
 import { SearchSong } from "./SearchSong";
 import { io } from 'socket.io-client';
+import {Live} from './Live'
+import { Navbar } from './Navbar';
+
+export const SocketContext = createContext();
 
 export const RehearsalRoom = () => {
 
     const [socket, setSocket] = useState(null);
     const [ isLive, setIsLive ] = useState(false)
-    const SocketContext = createContext();
+    const [lyricsOrChords, setLyricsOrChords] = useState([])
+    const [songData, setSongData] = useState({})
+    
     const navigate = useNavigate()
     const userId = useGetUserId()
     const isAdmin = useGetIsAdmin()
@@ -24,40 +30,58 @@ export const RehearsalRoom = () => {
             query : {userId}
         });
         setSocket(newSocket);
-        console.log("Socket connected:", socket.id);
+        newSocket.on("connect", () => {
+            console.log("Socket successfully connected:", newSocket.id);
+        });
 
         const handleStartRehearsal = () => {
             console.log("Client says start Rehearsal");
             setIsLive(true)
-            navigate("/live");
         };
+        const handleEndRehearsal = () => {
+            setIsLive(false)
+        };
+        const handleLyricsAndChords = ({song ,lyricsAndChords}) => {
+            console.log("get lyrics and chords")
+            setLyricsOrChords(lyricsAndChords)
+            setSongData(song)
+        };
+        const handleLyrics = ({song ,lyrics}) => {
+            setLyricsOrChords(lyrics)
+            setSongData(song)
+        };
+        newSocket.on("sendLyricsAndChords",handleLyricsAndChords);
+        newSocket.on("sendLyrics",handleLyrics);
 
-
-
-        socket.on("startRehearsal", handleStartRehearsal);
-
-        socket.on('disconnect', () => {
-            console.log("Socket disconnected");
-        });
+        newSocket.on("startRehearsal", handleStartRehearsal);
+        newSocket.on("endRehearsal", handleEndRehearsal);
 
         
         return () => { 
-            socket.disconnect();
+            newSocket.off("sendLyrics", handleLyricsAndChords);
+            newSocket.off("sendLyricsAndChords", handleLyricsAndChords);
+
+            newSocket.off("startRehearsal", handleStartRehearsal); 
+            newSocket.off("endRehearsal", handleEndRehearsal); 
+            newSocket.disconnect();
             // setCookie("access_token", "")
             // window.localStorage.removeItem("userId")
             // window.localStorage.removeItem("isAdmin")
         };
-    }, []); 
+    }, [userId, isAdmin]); 
 
 
     return (
         < SocketContext.Provider  value={{ socket }}>
         <div>
-
-
-            <div>
-                { isAdmin ? <SearchSong /> : <MainPlayer /> }
-            </div>
+            { !isLive ? 
+                <div>
+                    { isAdmin ? <SearchSong /> : <MainPlayer /> }
+                </div> : 
+                <Live 
+                songData = {songData} 
+                lyricsOrChords = {lyricsOrChords}  />
+            }
         </div>
 
 

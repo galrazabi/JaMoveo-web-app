@@ -6,7 +6,6 @@ import http from 'http';
 import { setUpSocket } from './routes/socket.js'
 import { userRouter } from './routes/users.js'
 import { songRouter } from './routes/songs.js';
-// import { socketRouter } from './routes/users'
 
 dotenv.config()
 
@@ -15,7 +14,6 @@ const server = http.createServer(app);
 
 
 app.use(express.json())
-// app.use(cors())
 app.use(cors({
     origin: '*',
   }));

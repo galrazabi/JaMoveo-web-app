@@ -1,15 +1,17 @@
-import { SocketContext } from "./socket"
+// import { SocketContext } from "./socket"
+import { SocketContext } from "./RehearsalRoom"
 import { useEffect, useState, useContext } from "react";
 import { useGetIsAdmin } from "../hooks/useGetIsAdmin"
 import { useNavigate} from 'react-router-dom'
 
 
 
-export const Live = () => {
+export const Live = ({songData, lyricsOrChords}) => {
     //get the song, if admin quit go back to mainplayer/mainadmin
-    const [lyricsOrChords, setLyricsOrChords] = useState([])
-    const [songData, setSongData] = useState({})
+    // const [lyricsOrChords, setLyricsOrChords] = useState([])
+    // const [songData, setSongData] = useState({})
 
+    // const { socket, songData, lyricsOrChords } = useContext(SocketContext)
     const { socket } = useContext(SocketContext)
     const isAdmin = useGetIsAdmin()
     const navigate = useNavigate()
@@ -18,30 +20,31 @@ export const Live = () => {
     let scrollInterval;
 
 
-    useEffect(() => {
-        const handleLyricsAndChords = ({song ,lyricsAndChords}) => {
-            setLyricsOrChords(lyricsAndChords)
-            setSongData(song)
-        };
-        const handleLyrics = ({song ,lyrics}) => {
-            setLyricsOrChords(lyrics)
-            setSongData(song)
-        };
-        const handleEndRehearsal = () => {
-            setLyricsOrChords("");
-            navigate(isAdmin ? "/searchsong" : "/mainplayer");
-        };
+    // useEffect(() => {
+    //     const handleLyricsAndChords = ({song ,lyricsAndChords}) => {
+    //         console.log("get lyrics and chords")
+    //         setLyricsOrChords(lyricsAndChords)
+    //         setSongData(song)
+    //     };
+    //     const handleLyrics = ({song ,lyrics}) => {
+    //         setLyricsOrChords(lyrics)
+    //         setSongData(song)
+    //     };
+    //     // const handleEndRehearsal = () => { //RR
+    //     //     setLyricsOrChords("");
+    //     //     navigate(isAdmin ? "/searchsong" : "/mainplayer");
+    //     // };
         
-        socket.on("sendLyricsAndChords",handleLyricsAndChords);
-        socket.on("sendLyrics",handleLyrics);
-        socket.on("endRehearsal", handleEndRehearsal);
+    //     socket.on("sendLyricsAndChords",handleLyricsAndChords);
+    //     socket.on("sendLyrics",handleLyrics);
+    //     // socket.on("endRehearsal", handleEndRehearsal); //RR
 
-        return () => {
-            socket.off("sendLyrics", handleLyricsAndChords);
-            socket.off("sendLyricsAndChords", handleLyricsAndChords);
-            socket.off("endRehearsal", handleEndRehearsal); 
-        };
-    }, [socket, isAdmin, navigate]);
+    //     return () => {
+    //         socket.off("sendLyrics", handleLyricsAndChords);
+    //         socket.off("sendLyricsAndChords", handleLyricsAndChords);
+    //         // socket.off("endRehearsal", handleEndRehearsal);  //RR
+    //     };
+    // }, [socket, isAdmin, navigate]);
 
     const toggleScroll = () => { // change and check if like setIsScrolling(!isScrolling) 
         setIsScrolling((prev) => !prev);

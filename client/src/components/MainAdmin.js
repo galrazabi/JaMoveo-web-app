@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react"
-import { SocketContext } from "./socket"
 import { useGetIsAdmin } from "../hooks/useGetIsAdmin"
 import { useCookies } from 'react-cookie'
 import axios from "axios"
@@ -19,10 +18,6 @@ export const MainAdmin = ({ setSongsList, setIsMain}) => {
             setIsMain(false)
 
         }catch(err) {
-            newFunction(err)
-        }
-
-        function newFunction(err) {
             console.error(err)
         }
     }

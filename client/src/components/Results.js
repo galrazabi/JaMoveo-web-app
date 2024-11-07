@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
-import { SocketContext } from "./socket"
+// import { SocketContext } from "./socket"
+import { SocketContext } from "./RehearsalRoom"
 import { useNavigate} from 'react-router-dom'
 import axios from "axios";
 
@@ -11,8 +12,8 @@ export const Results = ({songsList, setSongsList, setIsMain}) => {
 
     const goToLive = async (song) => {
         socket.emit('adminStartRehearsal', song)
-        setSongsList([]) 
-        navigate("/live")
+        // setSongsList([]) //RR
+        // navigate("/live") // RR
     }
 
     const backToMain = () => {
@@ -24,7 +25,7 @@ export const Results = ({songsList, setSongsList, setIsMain}) => {
         <div>
             <h1>Showing the results</h1>
             <ul>
-                { songsList.map(( song ) => ( // should contain song name, artist and image
+                { songsList.map(( song ) => ( 
                     <li key={song}>
                         <button  type="button" onClick={() => goToLive(song)}>
                             <p>Song Name: {song.name}</p>
@@ -38,6 +39,5 @@ export const Results = ({songsList, setSongsList, setIsMain}) => {
             <br />
             <button onClick={() => backToMain()}>Back</button>
         </div>
-        //if there is a song lists show them
     )
 }

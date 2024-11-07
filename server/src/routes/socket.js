@@ -1,8 +1,6 @@
 import { Server } from 'socket.io'
-import { getLyrics, formatLyricsAndChords } from '../utils.js'
-import { UsersModel } from '../models/Users.js';
-
-// for now the band will be a dict - need to make it in the database
+import { getLyrics, formatLyricsAndChords } from '../databaseOperations.js'
+import { getUserInstrumentFromDB } from './users.js'
 
 
 const setUpSocket = (server) => {
@@ -14,56 +12,54 @@ const setUpSocket = (server) => {
         }
       });
 
+    const vocalistSocket = new Set()
+    const nonVocalistSocket = new Set()
+
+    const categorizeUserByInstrument = async (socket) => {
+
+      const userId = socket.handshake.query.userId;
+
+      const instrument = await getUserInstrumentFromDB( userId )
+
+      console.log(instrument)
+
+      if ( instrument === 'vocals') {
+        vocalistSocket.add(socket.id);
+      } else {
+        nonVocalistSocket.add(socket.id);
+      }
+
+    }
+
     io.on("connection", (socket) => {
 
         console.log("user connected: " + socket.id)
+        
+        categorizeUserByInstrument(socket)
 
-        socket.on('adminStartRehearsal',async (song) => { 
-          //check what to send (lyric or all) and who to send to using the user id in the local storage and call mongo and check the instrument
+        socket.on('adminStartRehearsal', (song) => { 
+          // update everyone the rehearsal started and send the lyrics and chords according to the vocal/ non vocal sets
+          console.log('admin Start Rehearsal') 
           const lyrics = getLyrics(song)
           const lyricsAndChords = formatLyricsAndChords(song)
-          // try{
-          //   const users = await UsersModel.find({})
-          //   users.forEach(user => {
-          //     if (user.instrument.toLocaleLowerCase() == "vocals") {
+          io.emit('startRehearsal') 
+          vocalistSocket.forEach(socketId => io.to(socketId).emit('sendLyrics', {song, lyrics})); 
+          nonVocalistSocket.forEach(socketId => io.to(socketId).emit('sendLyricsAndChords', {song, lyricsAndChords})); 
 
-          //     }
-          //   })
-
-          // } catch (err) {
-          //   console.error(err)
-          // }
-          socket.broadcast.emit('startRehearsal') // send to everyone but myself
-          console.log('lyricsAndChords: ', lyricsAndChords) 
-          // io.emit('sendLyrics', {song, lyrics})
-          io.emit('sendLyricsAndChords', {song , lyricsAndChords} )
-          console.log('admin Start Rehearsal') 
+          
         })
 
-        
-
-        
-
         socket.on('adminEndRehearsal', () => {
-          console.log('adminEndRehearsal')
           io.emit('endRehearsal')
         })
 
-      //   function disconnectAllUsers() {
-      //     console.log(io.sockets.sockets)
-      //     for (let [id, socket] of io.sockets.sockets) {
-      //         socket.disconnect(true);  // `true` forces disconnection
-      //         console.log(`Disconnected socket: ${id}`);
-      //     }
-      // }
-      // disconnectAllUsers()
-
       socket.on('disconnect', () => {
-        console.log('User disconnected: ' + socket.id );
+        // delete the diconnected user from the vocal/ non vocal list
+        vocalistSocket.delete(socket.id);
+        nonVocalistSocket.delete(socket.id);
         
       });
     })
-
 }
 
 export {setUpSocket}

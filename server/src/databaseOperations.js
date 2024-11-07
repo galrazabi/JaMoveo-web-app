@@ -17,10 +17,7 @@ const loadDataFromFilePath = (filePath) => {
     }
 };
 
-const reverseString = (str) => {
-    return str.split('').reverse().join('');
-}
-
+// parse the lyrics from JS object with path to a lyrics file to string ordered by lines
 export const getLyrics = (song) => {
     try {
         const lyricsData = loadDataFromFilePath(song.lyrics_chords_path)
@@ -35,6 +32,9 @@ export const getLyrics = (song) => {
     }
 };
 
+const reverseString = (str) => {
+    return str.split('').reverse().join('');
+}
 
 
 export const formatLyricsAndChords = (song) => {
@@ -52,12 +52,12 @@ export const formatLyricsAndChords = (song) => {
                 const lyricsPart = part.lyrics || '';
                 const chordPart = part.chords || '';
 
-                // Add chord above lyrics with precise padding
-                chordsLine += chordPart.padEnd(lyricsPart.length + 1 , ' '); // Add 1 space for better alignment
+                // Add chord above lyrics with precise padding + one space extra between word
+                chordsLine += chordPart.padEnd(lyricsPart.length + 1 , ' ');
                 lyricsLine += lyricsPart + ' ';
             });
 
-            // Trim and push each line to the formatted output
+            // Trim and push each line to the formatted output, if hebrew reverse the chords
             switch (song.languege){
                 case "he":
                     formattedOutput.push(reverseString(chordsLine));
@@ -88,7 +88,8 @@ export const searchSongsDB = (searchTerm) => {
             return true;
         }
 
-        // parse the lyrics from JS object to string ordered by lines, and check if the line includes the term
+        //check if the line includes the term
         return getLyrics(song).some(line => line.toLowerCase().includes(searchTerm.toLowerCase()))
     });
 };
+

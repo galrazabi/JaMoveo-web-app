@@ -19,7 +19,7 @@ export const Login = () => {
             window.localStorage.setItem("userId", await response.data.userId)
             window.localStorage.setItem("isAdmin", await response.data.isAdmin)
             setCookie("access_token", await response.data.token)
-            // navigate(await response.data.isAdmin ? "/searchsong" : "/mainplayer")
+            // navigate(await response.data.isAdmin ? "/searchsong" : "/mainplayer") //RR
             navigate('/rehearsalroom')
 
         } catch(err) {
