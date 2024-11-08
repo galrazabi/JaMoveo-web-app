@@ -3,6 +3,7 @@ import { useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import { useCookies } from 'react-cookie'
 import "./Auth.css"
+import config from '../config.json';
 
 // Login component - Allows users to log in to their account
 export const Login = () => {
@@ -17,7 +18,7 @@ export const Login = () => {
     const onSubmit = async (event) => {
         event.preventDefault()
         try{
-            const response = await axios.post("http://34.207.214.88/users/login", {username, password})
+            const response = await axios.post(`${config.backend.url}/users/login`, {username, password})
             console.log(response.data);
             
             window.localStorage.setItem("userId", await response.data.userId)

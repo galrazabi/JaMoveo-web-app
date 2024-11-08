@@ -3,6 +3,7 @@ import { SocketContext } from "./RehearsalRoom"
 import { useCookies } from 'react-cookie'
 import axios from "axios"
 import './MainAdmin.css'
+import config from '../config.json';
 
 // MainAdmin component - Handle song search
 export const MainAdmin = ({ setSongsList, setIsMain}) => {
@@ -10,12 +11,13 @@ export const MainAdmin = ({ setSongsList, setIsMain}) => {
     const [searchTerm, setSearchTerm] = useState("")
     const [cookie, _ ] = useCookies("access_token")
     const { logout } = useContext(SocketContext)
+    
 
 
     const onSubmit = async (event) => {
         event.preventDefault();
         try{
-            const response = await axios.get(`http://34.207.214.88/songs/match/song/list/${searchTerm}`, {headers: {authorization : cookie.access_token}});
+            const response = await axios.get(`${config.backend.url}/songs/match/song/list/${searchTerm}`, {headers: {authorization : cookie.access_token}});
             setSongsList(response.data.matchingSongs)
             setIsMain(false)
 

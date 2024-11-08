@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import "./Auth.css"
+import config from '../config.json';
 
 // Signup component - Allows users to create a new account
 export const Signup = () => {
@@ -29,9 +30,9 @@ export const Signup = () => {
             
             // Send signup request based on admin status
             if (isAdmin){
-                const response = await axios.post("http://34.207.214.88/users/signup/admin", {username, password, instrument})
+                const response = await axios.post(`${config.backend.url}/users/signup/admin`, {username, password, instrument})
             }else {
-                const response = await axios.post("http://34.207.214.88/users/signup", {username, password, instrument})
+                const response = await axios.post(`${config.backend.url}/users/signup`, {username, password, instrument})
             }
             
             navigate("/")

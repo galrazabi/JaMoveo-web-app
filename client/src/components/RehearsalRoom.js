@@ -7,6 +7,8 @@ import { MainPlayer } from './MainPlayer'
 import { SearchSong } from "./SearchSong";
 import { io } from 'socket.io-client';
 import {Live} from './Live'
+import config from '../config.json';
+
 
 // Create a context for managing WebSocket connections across components
 export const SocketContext = createContext();
@@ -27,7 +29,7 @@ export const RehearsalRoom = () => {
 
     useEffect(() => {
         // Initialize socket connection only once and send the user id saved in the local storage
-        const newSocket = io('http://localhost:8000', {
+        const newSocket = io(`${config.backend.url}`, {
             query : {userId}
         });
         setSocket(newSocket);
