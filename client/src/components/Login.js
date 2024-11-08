@@ -17,7 +17,7 @@ export const Login = () => {
     const onSubmit = async (event) => {
         event.preventDefault()
         try{
-            const response = await axios.post("http://localhost:8000/users/login", {username, password})
+            const response = await axios.post("http://34.207.214.88/users/login", {username, password})
             console.log(response.data);
             
             window.localStorage.setItem("userId", await response.data.userId)

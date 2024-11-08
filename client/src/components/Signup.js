@@ -29,9 +29,9 @@ export const Signup = () => {
             
             // Send signup request based on admin status
             if (isAdmin){
-                const response = await axios.post("http://localhost:8000/users/signup/admin", {username, password, instrument})
+                const response = await axios.post("http://34.207.214.88/users/signup/admin", {username, password, instrument})
             }else {
-                const response = await axios.post("http://localhost:8000/users/signup", {username, password, instrument})
+                const response = await axios.post("http://34.207.214.88/users/signup", {username, password, instrument})
             }
             
             navigate("/")
