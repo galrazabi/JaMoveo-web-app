@@ -3,7 +3,7 @@ import { SocketContext } from "./RehearsalRoom"
 import { useCookies } from 'react-cookie'
 import axios from "axios"
 import './MainAdmin.css'
-import config from '../config.json';
+import config from '../config.json' ;
 
 // MainAdmin component - Handle song search
 export const MainAdmin = ({ setSongsList, setIsMain}) => {

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import "./Auth.css"
-import config from '../config.json';
+import config from '../config.json' ;
 
 // Signup component - Allows users to create a new account
 export const Signup = () => {

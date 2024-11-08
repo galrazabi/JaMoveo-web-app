@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv';
+import config from '../config.json' assert { type: 'json' };
 
-dotenv.config()
-const secret = process.env.SECRET
+const secret = config.SECRET
 
 // Middleware to verify JWT token for protected routes
 export const verifyToken = (req, res, next) => {

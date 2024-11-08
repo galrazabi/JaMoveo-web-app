@@ -3,7 +3,7 @@ import { useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import { useCookies } from 'react-cookie'
 import "./Auth.css"
-import config from '../config.json';
+import config from '../config.json' ;
 
 // Login component - Allows users to log in to their account
 export const Login = () => {

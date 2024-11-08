@@ -2,11 +2,10 @@ import express from 'express';
 import { UsersModel } from '../models/Users.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import config from '../../config.json' assert { type: 'json' };
 
-dotenv.config()
-const slatRounds = Number(process.env.SALT_ROUNDS)
-const secret = process.env.SECRET
+const slatRounds = Number(config.SALT_ROUNDS)
+const secret = config.SECRET
 const router = express.Router()
 
 // User signup route for regular users

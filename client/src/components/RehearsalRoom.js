@@ -7,7 +7,7 @@ import { MainPlayer } from './MainPlayer'
 import { SearchSong } from "./SearchSong";
 import { io } from 'socket.io-client';
 import {Live} from './Live'
-import config from '../config.json';
+import config from '../config.json' ;
 
 
 // Create a context for managing WebSocket connections across components

@@ -1,5 +1,4 @@
 import express from 'express';
-import { UsersModel } from '../models/Users.js';
 import {verifyToken} from "../verifyToken.js"
 import { searchSongsDB } from "../databaseOperations.js"
  
