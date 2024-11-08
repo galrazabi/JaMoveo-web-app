@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config()
 const secret = process.env.SECRET
 
+// Middleware to verify JWT token for protected routes
 export const verifyToken = (req, res, next) => {
     const token = req.headers.authorization;
     if(token){

@@ -7,9 +7,8 @@ import { MainPlayer } from './MainPlayer'
 import { SearchSong } from "./SearchSong";
 import { io } from 'socket.io-client';
 import {Live} from './Live'
-import './RehearsalRoom.css'
 
-
+// Create a context for managing WebSocket connections across components
 export const SocketContext = createContext();
 
 export const RehearsalRoom = () => {
@@ -20,9 +19,11 @@ export const RehearsalRoom = () => {
     const [songData, setSongData] = useState({})
     const navigate = useNavigate()
   
+
     const userId = useGetUserId()
     const isAdmin = useGetIsAdmin()
     const [_, setCookie] = useCookies(["access_token"])
+
 
     useEffect(() => {
         // Initialize socket connection only once and send the user id saved in the local storage
@@ -30,43 +31,47 @@ export const RehearsalRoom = () => {
             query : {userId}
         });
         setSocket(newSocket);
+
         newSocket.on("connect", () => {
             console.log("Socket successfully connected:", newSocket.id);
         });
 
         const handleStartRehearsal = () => {
-            console.log("Client says start Rehearsal");
             setIsLive(true)
         };
+
         const handleEndRehearsal = () => {
             setIsLive(false)
         };
+
         const handleLyricsAndChords = ({song ,lyricsAndChords}) => {
-            console.log("get lyrics and chords")
             setLyricsOrChords(lyricsAndChords)
             setSongData(song)
         };
+
         const handleLyrics = ({song ,lyrics}) => {
             setLyricsOrChords(lyrics)
             setSongData(song)
         };
-        newSocket.on("sendLyricsAndChords",handleLyricsAndChords);
-        newSocket.on("sendLyrics",handleLyrics);
+
 
         newSocket.on("startRehearsal", handleStartRehearsal);
+        newSocket.on("sendLyricsAndChords",handleLyricsAndChords);
+        newSocket.on("sendLyrics",handleLyrics);
         newSocket.on("endRehearsal", handleEndRehearsal);
 
         
         return () => { 
+            // Clean up socket listeners on component unmount
+            newSocket.off("startRehearsal", handleStartRehearsal); 
             newSocket.off("sendLyrics", handleLyricsAndChords);
             newSocket.off("sendLyricsAndChords", handleLyricsAndChords);
-
-            newSocket.off("startRehearsal", handleStartRehearsal); 
             newSocket.off("endRehearsal", handleEndRehearsal); 
             newSocket.disconnect();
         };
     }, [userId, isAdmin]); 
 
+    // Log out user, ending rehearsal if admin is live
     const logout = () => {
         if (isAdmin && isLive) { 
             socket.emit("adminEndRehearsal")

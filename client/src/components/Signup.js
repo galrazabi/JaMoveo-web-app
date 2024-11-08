@@ -3,18 +3,22 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import "./Auth.css"
 
+// Signup component - Allows users to create a new account
 export const Signup = () => {
 
     const [username, setUsername ] = useState("")
     const [password, setPassword ] = useState("")
+
     const location = useLocation()
     const navigate = useNavigate()
 
+    // Determine if the current signup is for an admin user based on URL
     const isAdmin = location.pathname.includes("/admin")
 
     const onSubmit = async (event) => {
         event.preventDefault()
 
+        // Validation to check if username and password are provided
         if (!username || !password) {
             alert("Username and password are required.");
             return; 
@@ -22,12 +26,14 @@ export const Signup = () => {
         try{
 
             const instrument = document.getElementById("instrument").value
-
+            
+            // Send signup request based on admin status
             if (isAdmin){
                 const response = await axios.post("http://localhost:8000/users/signup/admin", {username, password, instrument})
             }else {
                 const response = await axios.post("http://localhost:8000/users/signup", {username, password, instrument})
             }
+            
             navigate("/")
             
 

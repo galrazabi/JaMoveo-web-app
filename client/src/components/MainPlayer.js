@@ -1,5 +1,6 @@
 import './MainPlayer.css'
 
+// MainPlayer component - Displayed for non-admins when not live
 export const MainPlayer = () => {
 
     return (

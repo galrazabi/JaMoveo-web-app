@@ -4,10 +4,13 @@ import axios from 'axios'
 import { useCookies } from 'react-cookie'
 import "./Auth.css"
 
+// Login component - Allows users to log in to their account
 export const Login = () => {
 
     const [username, setUsername ] = useState("")
     const [password, setPassword ] = useState("")
+
+    // Cookie handler for managing authentication token
     const [_, setCookie] = useCookies("")
     const navigate = useNavigate()
 

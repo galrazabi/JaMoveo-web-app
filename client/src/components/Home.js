@@ -1,5 +1,6 @@
 import "./Home.css"
 
+// Home component - Landing page with welcome message and navigation options
 export const Home = () => {
     return (
         <div className="home-container">

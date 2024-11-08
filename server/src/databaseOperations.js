@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename); 
 
 
-// Load json file data
+// Load JSON data from a given file path
 const loadDataFromFilePath = (filePath) => {
     try {
         const fullFilePath =  path.join(__dirname, filePath);
@@ -17,7 +17,7 @@ const loadDataFromFilePath = (filePath) => {
     }
 };
 
-// parse the lyrics from JS object with path to a lyrics file to string ordered by lines
+// Parse lyrics data from a JSON object to a list of lines
 export const getLyrics = (song) => {
     try {
         const lyricsData = loadDataFromFilePath(song.lyrics_chords_path)
@@ -32,11 +32,12 @@ export const getLyrics = (song) => {
     }
 };
 
+// Reverse a string (used for Hebrew language)
 const reverseString = (str) => {
     return str.split('').reverse().join('');
 }
 
-
+// Format lyrics and chords data with proper spacing and alignment
 export const formatLyricsAndChords = (song) => {
     try {
 
@@ -57,7 +58,7 @@ export const formatLyricsAndChords = (song) => {
                 lyricsLine += lyricsPart + ' ';
             });
 
-            // Trim and push each line to the formatted output, if hebrew reverse the chords
+            // Reverse chords line if song language is Hebrew
             switch (song.languege){
                 case "he":
                     formattedOutput.push(reverseString(chordsLine));
@@ -75,20 +76,17 @@ export const formatLyricsAndChords = (song) => {
     }
 };
 
-
+// Search songs by name, artist, or lyrics content
 export const searchSongsDB = (searchTerm) => {
 
-    //Send path to the mock db and get the songs data
     const songsData = loadDataFromFilePath("../data/songs.json").songs;
 
     return songsData.filter(song => {
-        // Check if term is in song name or artist
         if (song.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
             song.artist.toLowerCase().includes(searchTerm.toLowerCase())) {
             return true;
         }
-
-        //check if the line includes the term
+        
         return getLyrics(song).some(line => line.toLowerCase().includes(searchTerm.toLowerCase()))
     });
 };

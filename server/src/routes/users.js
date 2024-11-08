@@ -9,15 +9,17 @@ const slatRounds = Number(process.env.SALT_ROUNDS)
 const secret = process.env.SECRET
 const router = express.Router()
 
-
+// User signup route for regular users
 router.post("/signup", async (req, res) => {
     signup(req, res, false)
 })
 
+// User signup route for admin users
 router.post("/signup/admin", async (req, res) => { 
     signup(req, res, true)
 })
 
+// Login route to authenticate users
 router.post('/login', async (req, res) => {
 
     const { username, password } = req.body;
@@ -34,12 +36,13 @@ router.post('/login', async (req, res) => {
         return res.status(401).json({ message: "Invalid password" });
     }
 
+    // Generate a token for authenticated user
     const token = jwt.sign({id: user._id}, secret)
 
     res.json({token, userId: user._id, isAdmin: user.isAdmin })
 })
 
-
+// Helper function for handling signup logic
 const signup = async (req, res, isAdmin) => {
 
     const {username, password, instrument} = req.body;
@@ -58,7 +61,7 @@ const signup = async (req, res, isAdmin) => {
     res.json({message: "User registerd! Please log in"})
 }
 
-
+// Retrieve instrument of a user by user ID
 export const getUserInstrumentFromDB = async ( userId ) => {
 
     try{

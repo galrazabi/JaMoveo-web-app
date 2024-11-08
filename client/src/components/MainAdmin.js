@@ -4,12 +4,13 @@ import { useCookies } from 'react-cookie'
 import axios from "axios"
 import './MainAdmin.css'
 
-
+// MainAdmin component - Handle song search
 export const MainAdmin = ({ setSongsList, setIsMain}) => {
 
     const [searchTerm, setSearchTerm] = useState("")
     const [cookie, _ ] = useCookies("access_token")
     const { logout } = useContext(SocketContext)
+
 
     const onSubmit = async (event) => {
         event.preventDefault();
